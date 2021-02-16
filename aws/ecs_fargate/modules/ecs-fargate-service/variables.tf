@@ -7,34 +7,6 @@ variable "aws_vpc_id" {
   type = string
 }
 
-//variable "datadog_site" {
-//  type = string
-//}
-//
-//variable "datadog_access_key" {
-//  type = string
-//}
-//
-//variable "datadog_api_key" {
-//  type = string
-//}
-//
-//variable "datadog_secret_access_key" {
-//  type = string
-//}
-//
-//variable "datadog_private_key" {
-//  type = string
-//}
-//
-//variable "datadog_public_key_pem" {
-//  type = string
-//}
-//
-//variable "datadog_public_key_fingerprint" {
-//  type = string
-//}
-
 variable "aws_iam_role_ecs_task_execution_role_arn" {
   type = string
 }

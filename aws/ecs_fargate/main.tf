@@ -37,13 +37,6 @@ module "ecs-fargate-service" {
   source = "./modules/ecs-fargate-service"
   app_name = var.app_name
   aws_vpc_id = module.network.aws_vpc_id
-//  datadog_access_key = var.datadog_access_key
-//  datadog_api_key = var.datadog_api_key
-//  datadog_private_key = var.datadog_private_key
-//  datadog_public_key_fingerprint = var.datadog_public_key_fingerprint
-//  datadog_public_key_pem = var.datadog_public_key_pem
-//  datadog_secret_access_key = var.datadog_secret_access_key
-//  datadog_site = var.datadog_site
   aws_iam_role_ecs_task_execution_role_arn = module.ecs_cluster.aws_iam_role_ecs_task_execution_role_arn
   task_fargate_cpu = var.task_fargate_cpu
   task_fargate_memory = var.task_fargate_memory

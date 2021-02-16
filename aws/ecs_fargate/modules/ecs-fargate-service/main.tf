@@ -55,16 +55,6 @@ resource "aws_security_group" "aws-ecs-tasks" {
 # container template
 data "template_file" "container_definitions" {
   template = file("./modules/ecs-fargate-service/container_definitions.json")
-
-  vars = {
-//    datadog_site = var.datadog_site
-//    datadog_secret_access_key = var.datadog_secret_access_key
-//    datadog_public_key_pem = var.datadog_public_key_pem
-//    datadog_public_key_fingerprint = var.datadog_public_key_fingerprint
-//    datadog_private_key = var.datadog_private_key
-//    datadog_api_key = var.datadog_api_key
-//    datadog_access_key = var.datadog_access_key
-  }
 }
 
 # ECS task definition
