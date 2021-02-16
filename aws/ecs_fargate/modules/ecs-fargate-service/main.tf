@@ -11,13 +11,12 @@ resource "aws_security_group" "aws-lb" {
   //    cidr_blocks = [var.app_sources_cidr]
   //  }
 
+  // Recreates the ALLOW ALL rule
   egress {
-    protocol = "-1"
-    from_port = 0
-    to_port = 0
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -28,7 +27,7 @@ resource "aws_security_group" "aws-lb" {
 # Traffic to the ECS cluster from the ALB
 resource "aws_security_group" "aws-ecs-tasks" {
   name = "${var.app_name}-ecs-tasks"
-  description = "Allow inbound access from the ALB only"
+  description = "Allow outbound access from the ALB only"
   vpc_id = var.aws_vpc_id
 
   //  ingress {
@@ -38,13 +37,12 @@ resource "aws_security_group" "aws-ecs-tasks" {
   //    security_groups = [aws_security_group.aws-lb.id]
   //  }
 
+  // Recreates the ALLOW ALL rule
   egress {
-    protocol = "-1"
-    from_port = 0
-    to_port = 0
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -62,7 +60,7 @@ resource "aws_ecs_task_definition" "private_location_worker_task" {
   family                   = "private-location-worker-task"
   execution_role_arn       = var.aws_iam_role_ecs_task_execution_role_arn
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["FARGATE", "EC2"]
   cpu                      = var.task_fargate_cpu
   memory                   = var.task_fargate_memory
   container_definitions    = data.template_file.container_definitions.rendered
