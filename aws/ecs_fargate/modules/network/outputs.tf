@@ -13,5 +13,5 @@ output "private_subnet_id_list" {
 }
 
 output "public_subnet_id_list" {
-  value = [aws_subnet.aws-subnet.*.id]
+  value = aws_subnet.aws-subnet.*.id
 }

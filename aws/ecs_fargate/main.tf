@@ -40,5 +40,7 @@ module "ecs-fargate-service" {
   aws_iam_role_ecs_task_execution_role_arn = module.ecs_cluster.aws_iam_role_ecs_task_execution_role_arn
   task_fargate_cpu = var.task_fargate_cpu
   task_fargate_memory = var.task_fargate_memory
+  ecs_cluster_id = module.ecs_cluster.ecs_cluster_id
+  subnet_id_list = module.network.public_subnet_id_list
 }
 

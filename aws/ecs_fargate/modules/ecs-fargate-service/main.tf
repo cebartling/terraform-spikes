@@ -68,29 +68,29 @@ resource "aws_ecs_task_definition" "private_location_worker_task" {
   container_definitions    = data.template_file.container_definitions.rendered
 }
 
-//# ECS service
-//resource "aws_ecs_service" "nginx_app" {
-//  name            = var.nginx_app_name
-//  cluster         = aws_ecs_cluster.aws-ecs.id
-//  task_definition = aws_ecs_task_definition.nginx_app.arn
-//  desired_count   = var.nginx_app_count
-//  launch_type     = "FARGATE"
-//
-//  network_configuration {
-//    security_groups  = [aws_security_group.aws-ecs-tasks.id]
-//    subnets          = aws_subnet.aws-subnet.*.id
-//    assign_public_ip = true
-//  }
-//
+# ECS service
+resource "aws_ecs_service" "private_location_worker_app" {
+  name            = var.app_name
+  cluster         = var.ecs_cluster_id
+  task_definition = aws_ecs_task_definition.private_location_worker_task.arn
+  desired_count   = var.private_location_worker_instance_count
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups  = [aws_security_group.aws-ecs-tasks.id]
+    subnets          = var.subnet_id_list
+    assign_public_ip = false
+  }
+
 //  load_balancer {
 //    target_group_arn = aws_alb_target_group.nginx_app.id
 //    container_name   = var.nginx_app_name
 //    container_port   = var.nginx_app_port
 //  }
-//
+
 //  depends_on = [aws_alb_listener.front_end]
-//
-//  tags = {
-//    Name = "${var.nginx_app_name}-nginx-ecs"
-//  }
-//}
+
+  tags = {
+    Name = "${var.app_name}-ecs-service"
+  }
+}

@@ -10,6 +10,10 @@ output "ecs_cluster_arn" {
   value = aws_ecs_cluster.aws-ecs.arn
 }
 
+output "ecs_cluster_id" {
+  value = aws_ecs_cluster.aws-ecs.id
+}
+
 output "ecs_cluster_name" {
   description = "ECS cluster name"
   value = aws_ecs_cluster.aws-ecs.name
