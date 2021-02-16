@@ -33,21 +33,19 @@ module "ecs_cluster" {
   subnet_id = module.network.aws_subnet_id
 }
 
-module "ecs-task-definition" {
-  source = "./modules/ecs_task_definition"
-}
-
 module "ecs-fargate-service" {
-//  source = "cn-terraform/ecs-fargate-service/aws"
-//  version = "2.0.12"
-//  container_name = var.container_name
-//  ecs_cluster_arn = module.ecs_cluster.ecs_cluster_arn
-//  ecs_cluster_name = module.ecs_cluster.ecs_cluster_name
-//  name_prefix = var.ecs_fargate_service_name_prefix
-//  private_subnets = module.network.private_subnet_id_list
-//  public_subnets = element(module.network.public_subnet_id_list, 0)
-//  task_definition_arn = module.ecs-task-definition.task_definition_arn
-//  vpc_id = module.network.aws_vpc_id
-//  assign_public_ip = false
+  source = "./modules/ecs-fargate-service"
+  app_name = var.app_name
+  aws_vpc_id = module.network.aws_vpc_id
+//  datadog_access_key = var.datadog_access_key
+//  datadog_api_key = var.datadog_api_key
+//  datadog_private_key = var.datadog_private_key
+//  datadog_public_key_fingerprint = var.datadog_public_key_fingerprint
+//  datadog_public_key_pem = var.datadog_public_key_pem
+//  datadog_secret_access_key = var.datadog_secret_access_key
+//  datadog_site = var.datadog_site
+  aws_iam_role_ecs_task_execution_role_arn = module.ecs_cluster.aws_iam_role_ecs_task_execution_role_arn
+  task_fargate_cpu = var.task_fargate_cpu
+  task_fargate_memory = var.task_fargate_memory
 }
 

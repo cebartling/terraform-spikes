@@ -58,34 +58,46 @@ variable "container_name" {
   type = string
   description = "Name of the running container"
 }
+
 variable "ecs_fargate_service_name_prefix" {
   type = string
   description = "Name prefix for resources on AWS"
 }
 
-
-
-//default_certificate_arn string
-//Description: (Optional) The ARN of the default SSL server certificate. Required if var.https_ports is set.
-//ecs_cluster_arn string
-//Description: ARN of an ECS cluster
-//ecs_cluster_name string
-//Description: (Optional) Name of the ECS cluster. Required only if autoscaling is enabled
-//name_prefix string
-//Description: Name prefix for resources on AWS
-//private_subnets list(any)
-//Description: The private subnets associated with the task or service.
-//public_subnets list(any)
-//Description: The public subnets associated with the task or service.
-//ssl_policy string
-//Description: (Optional) The name of the SSL Policy for the listener. . Required if var.https_ports is set.
-//task_definition_arn
+//variable "datadog_site" {
+//  type = string
+//}
 //
+//variable "datadog_access_key" {
+//  type = string
+//}
 //
-//task_definition_arn string
-//Description: (Required) The full ARN of the task definition that you want to run in your service.
-//vpc_id string
-//Description: ID of the VPC
+//variable "datadog_api_key" {
+//  type = string
+//}
+//
+//variable "datadog_secret_access_key" {
+//  type = string
+//}
+//
+//variable "datadog_private_key" {
+//  type = string
+//}
+//
+//variable "datadog_public_key_pem" {
+//  type = string
+//}
+//
+//variable "datadog_public_key_fingerprint" {
+//  type = string
+//}
 
+variable "task_fargate_cpu" {
+  type = number
+}
+
+variable "task_fargate_memory" {
+  type = number
+}
 
 
