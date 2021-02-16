@@ -3,11 +3,18 @@ variable "app_name" {
   description = "Application name"
 }
 
-//variable "aws_region" {
-//  type = string
-//  description = "AWS region where everything is being provisioned"
-//}
-//
+# override ECS AMI image
+variable "aws_ecs_ami_override" {
+  type = string
+  default = ""
+  description = "Machine image to use for ec2 instances"
+}
+
+variable "aws_region" {
+  type = string
+  description = "AWS region where everything is being provisioned"
+}
+
 //variable "cluster_runner_type" {
 //  type = string
 //}

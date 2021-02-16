@@ -23,6 +23,7 @@ module "network" {
 module "ecs_cluster" {
   source = "./modules/ecs_cluster"
   app_name = var.app_name
+  aws_region = var.aws_region
 }
 
 
