@@ -22,8 +22,15 @@ module "network" {
 
 module "ecs_cluster" {
   source = "./modules/ecs_cluster"
+  admin_sources_cidr_list = var.admin_sources_cidr_list
+  app_environment = var.app_environment
   app_name = var.app_name
+  aws_key_pair_name = var.aws_key_pair_name
   aws_region = var.aws_region
+  aws_vpc_id = module.network.aws_vpc_id
+  cluster_runner_count = var.cluster_runner_count
+  cluster_runner_type = var.cluster_runner_type
+  subnet_id = module.network.aws_subnet_id
 }
 
 
