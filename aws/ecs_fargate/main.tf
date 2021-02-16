@@ -33,14 +33,21 @@ module "ecs_cluster" {
   subnet_id = module.network.aws_subnet_id
 }
 
+module "ecs-task-definition" {
+  source = "./modules/ecs_task_definition"
+}
 
 //module "ecs-fargate-service" {
 //  source = "cn-terraform/ecs-fargate-service/aws"
 //  version = "2.0.12"
-//  # insert the 10 required variables here
 //  container_name = var.container_name
-//  default_certificate_arn =
-//  ecs_cluster_arn =
-//  ecs_cluster_name =
+//  ecs_cluster_arn = module.ecs_cluster.ecs_cluster_arn
+//  ecs_cluster_name = module.ecs_cluster.ecs_cluster_name
+//  name_prefix = var.ecs_fargate_service_name_prefix
+//  private_subnets = module.network.private_subnet_id_list
+//  public_subnets = element(module.network.public_subnet_id_list, 0)
+//  task_definition_arn = module.ecs-task-definition.task_definition_arn
+//  vpc_id = module.network.aws_vpc_id
+//  assign_public_ip = false
 //}
 

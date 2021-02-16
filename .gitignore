@@ -3,3 +3,5 @@
 terraform.tfvars
 terraform.tfstate
 terraform.tfstate.backup
+/aws/ecs_fargate/modules/ecs_task_definition/private_location_config.json
+/aws/ecs_fargate/modules/ecs_task_definition/container_definitions.json

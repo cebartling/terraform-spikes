@@ -7,3 +7,11 @@ output "aws_vpc_id" {
 output "aws_subnet_id" {
   value = element(aws_subnet.aws-subnet.*.id, 0)
 }
+
+output "private_subnet_id_list" {
+  value = []
+}
+
+output "public_subnet_id_list" {
+  value = [aws_subnet.aws-subnet.*.id]
+}

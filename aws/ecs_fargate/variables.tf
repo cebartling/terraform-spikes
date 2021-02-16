@@ -54,11 +54,15 @@ variable "cluster_runner_count" {
   default     = "1"
 }
 
+variable "container_name" {
+  type = string
+  description = "Name of the running container"
+}
+variable "ecs_fargate_service_name_prefix" {
+  type = string
+  description = "Name prefix for resources on AWS"
+}
 
-//variable "container_name" {
-//  type = string
-//  description = "Name of the running container"
-//}
 
 
 //default_certificate_arn string
