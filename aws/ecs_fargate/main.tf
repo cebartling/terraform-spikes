@@ -1,5 +1,3 @@
-# Setup the AWS provider | main.tf
-
 terraform {
   required_version = "~> 0.14"
   required_providers {
@@ -20,6 +18,11 @@ module "network" {
   source = "./modules/network"
   app_name = var.app_name
   app_environment = var.app_environment
+}
+
+module "ecs_cluster" {
+  source = "./modules/ecs_cluster"
+  app_name = var.app_name
 }
 
 
