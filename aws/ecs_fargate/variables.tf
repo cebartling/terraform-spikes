@@ -1,0 +1,56 @@
+
+
+variable "aws_region" {
+  type = string
+  description = "AWS region to use"
+}
+
+variable "aws_named_profile" {
+  type = string
+  description = "AWS named profile"
+}
+
+variable "aws_shared_credentials_file" {
+  type = string
+  description = "AWS credentials file"
+}
+
+variable "app_name" {
+  type = string
+  description = "Name of the application"
+}
+
+variable "app_environment" {
+  type = string
+}
+
+//variable "container_name" {
+//  type = string
+//  description = "Name of the running container"
+//}
+
+
+//default_certificate_arn string
+//Description: (Optional) The ARN of the default SSL server certificate. Required if var.https_ports is set.
+//ecs_cluster_arn string
+//Description: ARN of an ECS cluster
+//ecs_cluster_name string
+//Description: (Optional) Name of the ECS cluster. Required only if autoscaling is enabled
+//name_prefix string
+//Description: Name prefix for resources on AWS
+//private_subnets list(any)
+//Description: The private subnets associated with the task or service.
+//public_subnets list(any)
+//Description: The public subnets associated with the task or service.
+//ssl_policy string
+//Description: (Optional) The name of the SSL Policy for the listener. . Required if var.https_ports is set.
+//task_definition_arn
+//
+//
+//task_definition_arn string
+//Description: (Required) The full ARN of the task definition that you want to run in your service.
+//vpc_id string
+//Description: ID of the VPC
+
+
+
