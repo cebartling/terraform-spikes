@@ -77,7 +77,7 @@ resource "aws_ecs_service" "private_location_worker_app" {
   network_configuration {
     security_groups  = [aws_security_group.aws-ecs-tasks.id]
     subnets          = var.subnet_id_list
-    assign_public_ip = false
+    assign_public_ip = true
   }
 
 //  load_balancer {
