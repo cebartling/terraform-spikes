@@ -14,9 +14,9 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group" : "/ecs/fargate-task-definition",
+        "awslogs-group" : "/ecs/private-locations",
         "awslogs-region": "us-east-1",
-        "awslogs-stream-prefix": "ecs"
+        "awslogs-stream-prefix": "ecs-private-locations"
       }
     },
     "healthCheck": {
