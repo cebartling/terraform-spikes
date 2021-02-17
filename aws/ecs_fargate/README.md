@@ -1,10 +1,8 @@
 # Datadog Private Location Hosting in AWS ECS Fargate
 
-
-
 ## Introduction
 
-Datadog allows for running synthetic API and browser automation tests within your internal, private network using a feature called [Private Locations](https://docs.datadoghq.com/synthetics/private_locations?tab=docker). In this Terraform project, I deploy the official `datadog/synthetics-private-location-worker` Docker image to AWS ECS Fargate, enabling Private Locations within my AWS VPC environment. 
+Datadog allows for running synthetic API and browser automation tests within your internal, private network using a feature called [Private Locations](https://docs.datadoghq.com/synthetics/private_locations?tab=docker). In this Terraform project, I deploy the official `datadog/synthetics-private-location-worker` Docker image to AWS ECS Fargate, enabling Private Locations within my AWS VPC environment. I used [this repository](https://github.com/guillermo-musumeci/terraform-ecs-fargate) for inspiration.
 
 ## Implementation
 
@@ -16,7 +14,7 @@ I created a new IAM account for this project and saved the access key ID and sec
 
 Go to the [EC2 Key Pairs](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:) configuration in the AWS Console. Create a new key pair, specifying the file format as *PEM*. In this example, I named my new key pair `datadog-private-locations-key-pair` and saved the key pair to my computer at `~/.ssh/datadog-private-locations-key-pair.pem`.
 
-### Step 1: Create terraform.tfvars file
+### Step 3: Create terraform.tfvars file
 
 Create the `terraform.tfvars` file in root project directory with the following contents:
 
@@ -43,7 +41,39 @@ task_fargate_memory = 1024
 ```
 
 
+### Step 4: Obtain the Datadog Private Locations configuration
 
-## Conclusions
+Go to the [Datadog Private Locations](https://app.datadoghq.com/synthetics/settings/private-locations) configuration page and add a new private location. Save the configuration to your computer. You will need this for the next step.
+
+### Step 5: Create the container_definitions.json file
+
+Go to `modules/ecs-fargate-service` directory and create a new `container_definitions.json` file. Use the `template_container_definitions.json` file as the initial file contents. Replace the `command` entries content with the values that you obtained in the previous step when creating a new private location in Datadog. 
+
+### Step 6: Initialize and run Terraform
+
+```shell
+terraform init
+
+terraform plan
+
+terraform apply
+```
+
+### Debugging issues
+
+
+#### List the stopped tasks from the AWS CLI
+
+```shell
+aws ecs list-tasks --cluster datadog-private-locations --desired-status STOPPED --region us-east-1 --profile MyNamedProile
+```
+
+#### Show details on a specific task from the AWS CLI
+
+```shell
+aws ecs describe-tasks --cluster datadog-private-locations --tasks arn:aws:ecs:us-east-1:999999999999:task/datadog-private-locations/xxxxxxxxxxxxxxxxxxx --region us-east-1 --profile MyNamedProile
+```
+
+
 
 
