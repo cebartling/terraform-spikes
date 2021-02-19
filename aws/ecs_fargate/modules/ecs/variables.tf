@@ -56,7 +56,7 @@ variable "private_location_worker_instance_count" {
   default = 1
 }
 
-variable "subnet_id_list" {
+variable "subnet_ids" {
   type = list(string)
 }
 

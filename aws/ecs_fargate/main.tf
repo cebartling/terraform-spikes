@@ -30,5 +30,8 @@ module "ecs" {
   aws_vpc_id = module.network.aws_vpc_id
   cluster_runner_count = var.cluster_runner_count
   cluster_runner_type = var.cluster_runner_type
-  subnet_id = module.network.aws_subnet_id
+  subnet_id = element(module.network.subnet_ids, 0)
+  task_fargate_cpu = var.task_fargate_cpu
+  task_fargate_memory = var.task_fargate_memory
+  subnet_ids = module.network.subnet_ids
 }

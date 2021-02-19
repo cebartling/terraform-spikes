@@ -325,7 +325,7 @@ resource "aws_ecs_service" "private_locations" {
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = var.subnet_id_list
+    subnets          = var.subnet_ids
     assign_public_ip = true
   }
 
