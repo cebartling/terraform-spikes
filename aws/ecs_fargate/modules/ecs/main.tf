@@ -2,6 +2,13 @@ data "template_file" "container_definitions" {
   template = file("./modules/ecs/container_definitions.json")
 }
 
+data "template_file" "cluster_user_data_shell_script" {
+  template = file("modules/ecs/cluster_user_data.sh")
+  vars = {
+    ecs_cluster = aws_ecs_cluster.private_locations.name
+  }
+}
+
 data "aws_iam_policy_document" "private_locations" {
   statement {
     actions = [
@@ -186,15 +193,6 @@ resource "aws_iam_instance_profile" "ecs_cluster_runner" {
   role = aws_iam_role.ecs_cluster_runner_role.name
 }
 
-# ec2 user data for hard drive
-data "template_file" "cluster_user_data_shell_script" {
-  template = file("modules/ecs_cluster/cluster_user_data.sh")
-  vars = {
-    ecs_cluster = aws_ecs_cluster.private_locations.name
-  }
-}
-
-# create ec2 instance for the ecs cluster runner
 resource "aws_instance" "ecs_cluster_runner" {
   ami = local.aws_ecs_ami
   instance_type = var.cluster_runner_type
