@@ -43,3 +43,21 @@ variable "subnet_id" {
   type = string
 }
 
+variable "task_fargate_cpu" {
+  type = number
+}
+
+variable "task_fargate_memory" {
+  type = number
+}
+
+variable "private_location_worker_instance_count" {
+  type = number
+  default = 1
+}
+
+variable "subnet_id_list" {
+  type = list(string)
+}
+
+

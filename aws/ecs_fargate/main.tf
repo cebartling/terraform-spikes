@@ -20,8 +20,8 @@ module "network" {
   app_environment = var.app_environment
 }
 
-module "ecs_cluster" {
-  source = "./modules/ecs_cluster"
+module "ecs" {
+  source = "./modules/ecs"
   admin_sources_cidr_list = var.admin_sources_cidr_list
   app_environment = var.app_environment
   app_name = var.app_name
@@ -32,15 +32,3 @@ module "ecs_cluster" {
   cluster_runner_type = var.cluster_runner_type
   subnet_id = module.network.aws_subnet_id
 }
-
-module "ecs-fargate-service" {
-  source = "./modules/ecs-fargate-service"
-  app_name = var.app_name
-  aws_vpc_id = module.network.aws_vpc_id
-  aws_iam_role_ecs_task_execution_role_arn = module.ecs_cluster.aws_iam_role_ecs_task_execution_role_arn
-  task_fargate_cpu = var.task_fargate_cpu
-  task_fargate_memory = var.task_fargate_memory
-  ecs_cluster_id = module.ecs_cluster.ecs_cluster_id
-  subnet_id_list = module.network.public_subnet_id_list
-}
-
