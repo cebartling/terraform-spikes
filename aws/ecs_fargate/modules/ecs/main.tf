@@ -1,6 +1,6 @@
-data "template_file" "container_definitions" {
-  template = file("./modules/ecs/container_definitions.json")
-}
+//data "template_file" "container_definitions" {
+//  template = file("./modules/ecs/container_definitions.json")
+//}
 
 data "template_file" "cluster_user_data_shell_script" {
   template = file("modules/ecs/cluster_user_data.sh")
@@ -61,67 +61,62 @@ data "aws_ami" "private_locations" {
   ]
 }
 
+data "aws_kms_key" "ssm" {
+  key_id = "alias/aws/ssm"
+}
+
+
 locals {
   aws_ecs_ami = var.aws_ecs_ami_override == "" ? data.aws_ami.private_locations.id : var.aws_ecs_ami_override
-  //  ebs_types = [
-  //    "t2",
-  //    "t3",
-  //    "m5",
-  //    "c5"
-  //  ]
-  //
-  //  cpu_by_instance = {
-  //    "t2.small" = 1024
-  //    "t2.large" = 2048
-  //    "t2.medium" = 2048
-  //    "t2.xlarge" = 4096
-  //    "t3.medium" = 2048
-  //    "m5.large" = 2048
-  //    "m5.xlarge" = 4096
-  //    "m5.2xlarge" = 8192
-  //    "m5.4xlarge" = 16384
-  //    "m5.12xlarge" = 49152
-  //    "m5.24xlarge" = 98304
-  //    "c5.large" = 2048
-  //    "c5d.large" = 2048
-  //    "c5.xlarge" = 4096
-  //    "c5d.xlarge" = 4096
-  //    "c5.2xlarge" = 8192
-  //    "c5d.2xlarge" = 8192
-  //    "c5.4xlarge" = 16384
-  //    "c5d.4xlarge" = 16384
-  //    "c5.9xlarge" = 36864
-  //    "c5d.9xlarge" = 36864
-  //    "c5.18xlarge" = 73728
-  //    "c5d.18xlarge" = 73728
-  //  }
-  //
-  //  mem_by_instance = {
-  //    "t2.small" = 1800
-  //    "t2.medium" = 3943
-  //    "t2.large" = 7975
-  //    "t2.xlarge" = 16039
-  //    "t3.medium" = 3884
-  //    "m5.large" = 7680
-  //    "m5.xlarge" = 15576
-  //    "m5.2xlarge" = 31368
-  //    "m5.4xlarge" = 62950
-  //    "m5.12xlarge" = 189283
-  //    "m5.24xlarge" = 378652
-  //    "c5.large" = 3704
-  //    "c5d.large" = 3704
-  //    "c5.xlarge" = 7624
-  //    "c5d.xlarge" = 7624
-  //    "c5.2xlarge" = 15463
-  //    "c5d.2xlarge" = 15463
-  //    "c5.4xlarge" = 31142
-  //    "c5d.4xlarge" = 31142
-  //    "c5.9xlarge" = 70341
-  //    "c5d.9xlarge" = 70341
-  //    "c5.18xlarge" = 140768
-  //    "c5d.18xlarge" = 140768
-  //  }
-  //}
+}
+
+resource "aws_ssm_parameter" "datadog_api_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/api_key"
+  type   = "SecureString"
+  value  = var.datadog_api_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_site" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/site"
+  type   = "SecureString"
+  value  = var.datadog_site
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_access_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/access_key"
+  type   = "SecureString"
+  value  = var.datadog_access_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_secret_access_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/secret_access_key"
+  type   = "SecureString"
+  value  = var.datadog_secret_access_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_private_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/private_key"
+  type   = "SecureString"
+  value  = var.datadog_private_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_public_key_pem" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/public_key_pem"
+  type   = "SecureString"
+  value  = var.datadog_public_key_pem
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_public_key_fingerprint" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/public_key_fingerprint"
+  type   = "SecureString"
+  value  = var.datadog_public_key_fingerprint
+  key_id = data.aws_kms_key.ssm.arn
 }
 
 resource "aws_ecs_cluster" "private_locations" {
@@ -311,7 +306,16 @@ resource "aws_ecs_task_definition" "private_locations" {
   requires_compatibilities = ["FARGATE", "EC2"]
   cpu                      = var.task_fargate_cpu
   memory                   = var.task_fargate_memory
-  container_definitions    = data.template_file.container_definitions.rendered
+  container_definitions = templatefile("${path.module}/container_definitions.json", {
+    account_id                      = data.aws_caller_identity.current.account_id
+    datadog_site                    = aws_ssm_parameter.datadog_site.value
+    datadog_secret_access_key       = aws_ssm_parameter.datadog_secret_access_key.value
+    datadog_public_key_pem          = aws_ssm_parameter.datadog_public_key_pem.value
+    datadog_public_key_fingerprint  = aws_ssm_parameter.datadog_public_key_fingerprint.value
+    datadog_private_key             = aws_ssm_parameter.datadog_private_key.value
+    datadog_api_key                 = aws_ssm_parameter.datadog_api_key.value
+    datadog_access_key              = aws_ssm_parameter.datadog_access_key.value
+  })
 }
 
 resource "aws_ecs_service" "private_locations" {

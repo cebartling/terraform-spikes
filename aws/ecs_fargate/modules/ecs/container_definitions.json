@@ -1,0 +1,37 @@
+[
+  {
+    "name": "private-location-worker-service",
+    "image": "datadog/synthetics-private-location-worker:latest",
+    "command": [
+      "--site='${datadog_site}'",
+      "--accessKey='${datadog_access_key}'",
+      "--datadogApiKey='${datadog_api_key}'",
+      "--secretAccessKey='${datadog_secret_access_key}'",
+      "--privateKey='${datadog_private_key}'",
+      "--publicKey.pem='${datadog_public_key_pem}'",
+      "--publicKey.fingerprint='${datadog_public_key_fingerprint}'"
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "ecs-private-location-worker",
+        "awslogs-region": "us-east-1",
+        "awslogs-stream-prefix": "ecs-private-location-worker"
+      }
+    },
+    "healthCheck": {
+      "retries": 3,
+      "command": [
+        "CMD-SHELL",
+        "/bin/sh -c '[ $(expr $(cat /tmp/liveness.date) + 300000) -gt $(date +%s%3N) ]'"
+      ],
+      "timeout": 2,
+      "interval": 10,
+      "startPeriod": 30
+    },
+    "compatibilities": [
+      "EC2",
+      "FARGATE"
+    ]
+  }
+]

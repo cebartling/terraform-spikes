@@ -60,4 +60,33 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "datadog_site" {
+  type = string
+}
+
+variable "datadog_access_key" {
+  type = string
+}
+
+variable "datadog_api_key" {
+  type = string
+}
+
+variable "datadog_secret_access_key" {
+  type = string
+}
+
+variable "datadog_private_key" {
+  type = string
+}
+
+variable "datadog_public_key_pem" {
+  type = string
+}
+
+variable "datadog_public_key_fingerprint" {
+  type = string
+}
+
+
 

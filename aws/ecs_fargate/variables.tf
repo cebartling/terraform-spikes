@@ -66,30 +66,37 @@ variable "ecs_fargate_service_name_prefix" {
 
 variable "datadog_site" {
   type = string
+  sensitive = true
 }
 
 variable "datadog_access_key" {
   type = string
+  sensitive = true
 }
 
 variable "datadog_api_key" {
   type = string
+  sensitive = true
 }
 
 variable "datadog_secret_access_key" {
   type = string
+  sensitive = true
 }
 
 variable "datadog_private_key" {
   type = string
+  sensitive = true
 }
 
 variable "datadog_public_key_pem" {
   type = string
+  sensitive = true
 }
 
 variable "datadog_public_key_fingerprint" {
   type = string
+  sensitive = true
 }
 
 variable "task_fargate_cpu" {
