@@ -14,6 +14,60 @@ provider "aws" {
   shared_credentials_file = var.aws_shared_credentials_file
 }
 
+
+data "aws_kms_key" "ssm" {
+  key_id = "alias/aws/ssm"
+}
+
+resource "aws_ssm_parameter" "datadog_api_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/api_key"
+  type   = "SecureString"
+  value  = var.datadog_api_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_site" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/site"
+  type   = "SecureString"
+  value  = var.datadog_site
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_access_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/access_key"
+  type   = "SecureString"
+  value  = var.datadog_access_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_secret_access_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/secret_access_key"
+  type   = "SecureString"
+  value  = var.datadog_secret_access_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_private_key" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/private_key"
+  type   = "SecureString"
+  value  = var.datadog_private_key
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_public_key_pem" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/public_key_pem"
+  type   = "SecureString"
+  value  = var.datadog_public_key_pem
+  key_id = data.aws_kms_key.ssm.arn
+}
+
+resource "aws_ssm_parameter" "datadog_public_key_fingerprint" {
+  name   = "/${var.app_name}-${var.app_environment}/datadog/public_key_fingerprint"
+  type   = "SecureString"
+  value  = var.datadog_public_key_fingerprint
+  key_id = data.aws_kms_key.ssm.arn
+}
+
 module "network" {
   source = "./modules/network"
   app_name = var.app_name
